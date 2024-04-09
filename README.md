@@ -113,6 +113,12 @@ exports["cw-rep"]:checkSkill("Searching", 100, function(hasskill)
     end
 end)
 ```
+Or as an alternative this:
+```lua
+    local hasSkill = exports["cw-rep"]:playerHasEnoughSkill("Searching", 100)
+```
+
+> The two above work sorta the same, just different ways to get the same result
 
 - The export to obtain a player's current skill to interact with other scripts is as follows:
 ```lua

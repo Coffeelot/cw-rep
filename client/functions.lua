@@ -2,6 +2,8 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local useDebug = Config.Debug
 
 local getCurrentSkill = function(skill)
+    if useDebug then print('Fetching skill', skill) end
+    if not mySkills[skill] then print("^1Skill " .. skill .. " does not exist") end
     return mySkills[skill]
 end exports('getCurrentSkill', getCurrentSkill)
 
@@ -31,10 +33,6 @@ local function handleNotification(skill, prevAmount, newAmount)
         end
     end
 end
-
-RegisterCommand('tskills', function(_, input)
-    handleNotification(input[1], input[2], input[3])
-end)
 
 function updateSkill(skill, amount)
     if useDebug then print('Updating', skill, amount) end
@@ -80,9 +78,9 @@ if useDebug then
      end)
 end
 
-local function checkSkill (skill, value)
-    if Config.Skills[skill] then
-        if Config.Skills[skill] >= tonumber(val) then
+local function playerHasEnoughSkill(skill, value)
+    if mySkills[skill] then
+        if mySkills[skill] >= tonumber(value) then
             return true
         else
             return false
@@ -91,6 +89,10 @@ local function checkSkill (skill, value)
         print("Skill " .. skill .. " doesn't exist")
         return false
     end
+end exports('playerHasEnoughSkill', playerHasEnoughSkill)
+
+local function checkSkill (skill, value, cb)
+    cb(playerHasEnoughSkill(skill,value))
 end exports('checkSkill', checkSkill)
 
 
@@ -103,8 +105,8 @@ UpdateSkill = function(skill, amount)
     return updateSkill(skill, amount)
 end exports('UpdateSkill', UpdateSkill)
 
-CheckSkill = function(skill, value)
-    return checkSkill(skill, value)
+CheckSkill = function(skill, value, cb)
+    return cb(playerHasEnoughSkill(skill, value))
 end exports('CheckSkill', CheckSkill)
 
 local function exportHandler(exportName, func)
@@ -121,7 +123,7 @@ exportHandler('UpdateSkill', function(skill, amount)
     updateSkill(skill, amount)
 end)
 
-exportHandler('CheckSkill', function(skill, value)
-    return checkSkill(skill, value)
+exportHandler('CheckSkill', function(skill, value, cb)
+    return cb(playerHasEnoughSkill(skill, value))
 end)
 
