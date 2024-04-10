@@ -14,7 +14,7 @@ local function formatResults(results)
 end
 
 local function fetchSkillsFromDb(source)
-	print('fetching for', source)
+	if useDebug then print('fetching for', source) end
 	local Player = QBCore.Functions.GetPlayer(source)
 	if Player then
 		local status = MySQL.scalar.await('SELECT skills FROM players WHERE citizenid = ?', {Player.PlayerData.citizenid})
@@ -59,7 +59,7 @@ function updateSkill(source, skill, amount)
 end exports('updateSkill', updateSkill)
 
 function fetchSkills(source)
-	return fetchSkills(source)
+	return fetchSkillsFromDb(source)
 end exports('fetchSkills', fetchSkills)
 
 exports('updateSkill', updateSkill)
