@@ -14,6 +14,17 @@ Config.EmailWaitTimes = { min = 4500, max =  7000 }
 Config.GenericMaxAmount = 10000 -- the max skill level. Can be overrided by adding maxLevel to any skill
 Config.GenericIcon = 'fas fa-book'
 
+Config.DefaultLevels = {
+    { from = 0, to = 100 },
+    { from = 100, to = 200 },
+    { from = 200, to = 300 },
+    { from = 300, to = 400 },
+    { from = 500, to = 600 },
+    { from = 600, to = 700 },
+    { from = 800, to = 900 },
+    { from = 900, to = 1000 },
+}
+
 Config.Skills = {
     taxi = {
         label = 'Taxi',
@@ -32,6 +43,16 @@ Config.Skills = {
     },
     streetreputation = {
         icon = 'fas fa-mask',
+        skillLevels = {
+            { title = "Unknown", from = 00, to = 1000 },
+            { title = "Rookie", from = 1000, to = 2000 },
+            { title = "Hustler", from = 2000, to = 3000 },
+            { title = "Crimer", from = 3000, to = 4000 },
+            { title = "Urban Enforcer", from = 5000, to = 6000 },
+            { title = "Renagade", from = 6000, to = 7000 },
+            { title = "Underboss", from = 8000, to = 9000 },
+            { title = "Boss", from = 9000, to = 10000 }, 
+        }
     },
     scrapping = {
         icon = 'fas fa-cannabis',

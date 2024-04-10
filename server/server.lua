@@ -71,6 +71,7 @@ end, "admin")
 
 QBCore.Commands.Add('fetchSkills', "Print skills for player with source", { { name = 'source', help = 'the id of the player' },}, true, function(source, args)
 	print('Fetching skill for ', args[1])
-	fetchSkillsFromDb(args[1])
+	local skills = fetchSkills(tonumber(args[1]))
+	print('^2 Player lockpicking skills:', skills.lockpicking)
 end, "admin")
 

@@ -78,6 +78,24 @@ The important thing here is the `notify = true` because without that you'll inst
         }
     },
 ```
+### Skill levels
+Default Skill levels are defined in `Config.DefaultLevels` and you can customize these to your liking, but you can also make custom levels for each individual skill, for example the streetreputation:
+```lua
+    streetreputation = {
+        icon = 'fas fa-mask',
+        skillLevels = {
+            { title = "Unknown", from = 00, to = 1000 },
+            { title = "Rookie", from = 1000, to = 2000 },
+            { title = "Hustler", from = 2000, to = 3000 },
+            { title = "Crimer", from = 3000, to = 4000 },
+            { title = "Urban Enforcer", from = 5000, to = 6000 },
+            { title = "Renagade", from = 6000, to = 7000 },
+            { title = "Underboss", from = 8000, to = 9000 },
+            { title = "Boss", from = 9000, to = 10000 }, 
+        }
+    },
+```
+> title is optional
 
 As you can see, you should also include a sender and a subject here.
 
@@ -133,10 +151,20 @@ To Update a skill please use the following export:
     exports["cw-rep"]:updateSkill(source, skillName, amount)
 ```
 > `source` should obviously be the player source
+An example of how to use this would be:
+```lua
+    exports["cw-rep"]:updateSkill(source, 'lockpicking', 10)
+```
 The export to check to get player skills:
 ```lua
     exports["cw-rep"]:fetchSkills(source)
 ```
+An example of how to use this would be:
+```lua
+    local playerSkills = exports["cw-rep"]:fetchSkills(source)
+    print('Player with source',source, ' lockpicking skills:',playerSkills.lockpicking)
+```
+
 > `source` should obviously be the player source
 
 ## Radial Menu

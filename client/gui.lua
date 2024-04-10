@@ -2,6 +2,39 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local oxmenu = exports.ox_menu
 
+local function getLevel(currentSkill, skillName)
+    local level = 0
+    if Config.Skills[skillName] == nil then print('^1 SKILL IS NOT DEFINED IN CONFIG', skillName) end
+
+    local levels = Config.Skills[skillName].skillLevels or Config.DefaultLevels
+    local levelLimits = levels[1]
+    for index, levelData in ipairs(levels) do
+        print(currentSkill, levelData.from, levelData.to)
+        print(currentSkill > levelData.from, currentSkill < levelData.to)
+        if currentSkill > levelData.from and currentSkill <= levelData.to then
+            if levelData.title then return levelData.title, levelData end
+            return level, levelData
+        end
+        if currentSkill > levelData.to then
+            level = level+1
+            levelLimits = levelData
+        end
+        print('^4', levelData.to)
+    end
+    if #levels == level then
+        print('^5 Max level reached')
+        level = 'Max'
+    end
+    print('^3',skillName, level, json.encode(levelLimits, {indent=true}))
+    if levelLimits.title then return levelLimits.title, levelLimits end
+    return level, levelLimits
+end
+
+local function getXpText(currentXp, nextLevel)
+    if currentXp > nextLevel then return 'XP: '..tostring(currentXp) end
+    return 'XP: '..currentXp..'/'..nextLevel
+end
+
 local function createSkillMenu()
     skillMenu = {}
     skillMenu[#skillMenu + 1] = {
@@ -12,33 +45,16 @@ local function createSkillMenu()
     }
 
     for k,currentValue in pairs(mySkills) do
-        print(json.encode(k, {indent=true}))
         local skillData = Config.Skills[k]
+        local label = k
+        if Config.Skills[k] and Config.Skills[k].label then
+            label = Config.Skills[k].label
+        end
         if not skillData.hide then
-            if currentValue <= 100 then
-                SkillLevel = 'Level 0 (Unskilled)'
-            elseif currentValue > 100 and currentValue <= 200 then
-                SkillLevel = 'Level 1 (Beginner)'
-            elseif currentValue > 200 and currentValue <= 400 then
-                SkillLevel = 'Level 2 (Amateur)'
-            elseif currentValue > 400 and currentValue <= 800 then
-                SkillLevel = 'Level 3 (Intermediate)'
-            elseif currentValue > 800 and currentValue <= 1600 then
-                SkillLevel = 'Level 4 (Competent)'
-            elseif currentValue > 1600 and currentValue <= 3200 then
-                SkillLevel = 'Level 5 (Skilled)'
-            elseif currentValue > 3200 and currentValue <= 6400 then
-                SkillLevel = 'Level 6 (Adept)'
-            elseif currentValue > 6400 and currentValue <= 12800 then
-                SkillLevel = 'Level 7 (Master)'
-            elseif currentValue > 12800 then
-                SkillLevel = 'Level 8 (Proficient)'
-            else 
-                SkillLevel = 'Unknown'
-            end
+            local level, levelData = getLevel(currentValue, k)
             skillMenu[#skillMenu + 1] = {
-                header = skillData.label or k,
-                txt = '( '..SkillLevel..' ) Total XP ( '..round1(currentValue)..' )',
+                header = label .. ' (Level: ' .. level .. ')',
+                txt = getXpText(currentValue, levelData.to),
                 icon = skillData.icon or nil,
                 params = {
                     args = {
@@ -56,7 +72,9 @@ local function createSkillMenuOX()
     local sortedSkills = {}
     
     local keys = {}
-    for key in pairs(mySkills) do
+    
+
+    for key in pairs(Config.Skills) do
         table.insert(keys, key)
     end
     -- Sort keys
@@ -64,50 +82,12 @@ local function createSkillMenuOX()
     -- Iterate over sorted keys and access corresponding values
     for _, key in ipairs(keys) do
         if not Config.Skills[key].hide then
-            local currentValue = mySkills[key]
+            local currentValue = mySkills[key] or 0
             local SkillLevel
             local min = 0
             local max = 0
-            if currentValue <= 100 then
-                SkillLevel = 'Level 0 - XP: '..math.round(currentValue)
-                min = 0
-                max = 100
-            elseif currentValue > 100 and currentValue <= 200 then
-                SkillLevel = 'Level 1 - XP: '..math.round(currentValue)
-                min = 100
-                max = 200
-            elseif currentValue > 200 and currentValue <= 400 then
-                SkillLevel = 'Level 2 - XP: '..math.round(currentValue)
-                min = 200
-                max = 400
-            elseif currentValue > 400 and currentValue <= 800 then
-                SkillLevel = 'Level 3 - XP: '..math.round(currentValue)
-                min = 400
-                max = 800
-            elseif currentValue > 800 and currentValue <= 1600 then
-                SkillLevel = 'Level 4 - XP: '..math.round(currentValue)
-                min = 800
-                max = 1600
-            elseif currentValue > 1600 and currentValue <= 3200 then
-                SkillLevel = 'Level 5 - XP: '..math.round(currentValue)
-                min = 1600
-                max = 3200
-            elseif currentValue > 3200 and currentValue <= 6400 then
-                SkillLevel = 'Level 6 - XP: '..math.round(currentValue)
-                min = 3200
-                max = 6400
-            elseif currentValue > 6400 and currentValue <= 12800 then
-                SkillLevel = 'Level 7 - XP: '..math.round(currentValue)
-                min = 6400
-                max = 12800
-            elseif currentValue > 12800 then
-                SkillLevel = 'Level 8 - XP: '..math.round(currentValue)
-                min = 12800
-                max = 1000000
-            else 
-                SkillLevel = 'Unknown'
-            end
-    
+
+            local level, levelData = getLevel(tonumber(currentValue), key)
             -- Calculate progress bar percentage
            
             local label = key
@@ -120,13 +100,13 @@ local function createSkillMenuOX()
             end
     
             options[#options + 1] = {
-                title = label .. ' (' .. SkillLevel .. ')',
-                description = '( '..SkillLevel..' ) Total XP ( '..math.round(currentValue)..' )',
+                title = label .. ' (Level: ' .. level .. ')',
+                description = getXpText(currentValue, levelData.to),
                 icon = icon,
                 args = {
                     currentValue = currentValue
                 },
-                progress = math.floor((currentValue - min) / (max - min) * 100),
+                progress = math.floor((currentValue - levelData.from) / (levelData.to - levelData.from) * 100),
                 colorScheme = Config.XPBarColour,
             }
         end
@@ -144,6 +124,7 @@ local function createSkillMenuOX()
 end
 
 RegisterCommand(Config.Skillmenu, function()
+    if mySkills == nil then return end
     if Config.TypeCommand and Config.UseOxMenu then
         createSkillMenuOX()
     elseif Config.TypeCommand then
