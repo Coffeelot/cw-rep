@@ -15,9 +15,7 @@
 
 ### [More free scripts](https://github.com/stars/Coffeelot/lists/cw-scripts)  👈
 
-**Support, updates and script previews**:
-
-[![Join The discord!](https://cdn.discordapp.com/attachments/977876510620909579/1013102122985857064/discordJoin.png)](https://discord.gg/FJY4mtjaKr )
+**Support, updates and script previews**: [Join The discord!](https://discord.gg/FJY4mtjaKr)
 
 If you want to support what we do, you can buy us a coffee here:
 
@@ -188,5 +186,5 @@ For radial menu access to "skills" command add this to qb-radialmenu/config.lua 
 ### [ Previews ]
 
 <p align="center">
-    <img src="https://media.discordapp.net/attachments/977876510620909579/1226952806192250890/image.png?ex=6626a3d8&is=66142ed8&hm=b69532db93874bc5babb96a602a602138612549c08ab1cf84c36b1ab03d6693d&=&format=webp&quality=lossless"/>
+    <img src="https://media.discordapp.net/attachments/1016069642495729715/1227702266119852132/image.png?ex=66295dd5&is=6616e8d5&hm=544bbf052da18b79839863217e8cee7fb700f8971ee1f2b388c448f62d534325&=&format=webp&quality=lossless"/>
 </p>
