@@ -54,11 +54,11 @@ RegisterNetEvent('cw-rep:server:triggerEmail', function(citizenid, sender, subje
 	end)
 end)
 
-function updateSkill(source, skill, amount)
+local function updateSkill(source, skill, amount)
 	TriggerClientEvent('cw-rep:client:updateSkills', source, skill, amount)
 end exports('updateSkill', updateSkill)
 
-function fetchSkills(source)
+local function fetchSkills(source)
 	return fetchSkillsFromDb(source)
 end exports('fetchSkills', fetchSkills)
 
