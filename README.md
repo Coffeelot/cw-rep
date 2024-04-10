@@ -134,6 +134,9 @@ end)
 Or as an alternative this:
 ```lua
     local hasSkill = exports["cw-rep"]:playerHasEnoughSkill("Searching", 100)
+    if hasSkill then
+        -- do thing
+    end
 ```
 
 > The two above work sorta the same, just different ways to get the same result
