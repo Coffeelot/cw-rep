@@ -13,6 +13,22 @@ local function formatResults(results)
 	return playerSkills
 end
 
+local function getDefault()
+	local playerSkills = {}
+	for skill, data in pairs(Config.Skills) do
+		playerSkills[skill] = 0
+	end
+	return playerSkills
+end
+
+local function updateSkillsInDb(src, data)
+	local Player = QBCore.Functions.GetPlayer(src)
+	MySQL.query('UPDATE players SET skills = @skills WHERE citizenid = @citizenid', {
+	   ['@skills'] = data,
+	   ['@citizenid'] = Player.PlayerData.citizenid
+   })
+end
+
 local function fetchSkillsFromDb(source)
 	if useDebug then print('fetching for', source) end
 	local Player = QBCore.Functions.GetPlayer(source)
@@ -21,7 +37,9 @@ local function fetchSkillsFromDb(source)
 		if status ~= nil then
 			return formatResults(json.decode(status))
 		else
-			return nil
+			local data = getDefault()
+			updateSkillsInDb(source, json.encode(data))
+			return data
 		end
 	else
 		if useDebug then print("^1Player did not exist") end
@@ -36,11 +54,7 @@ QBCore.Functions.CreateCallback('cw-rep:server:fetchStatus', function(source, cb
 end)
 
 RegisterServerEvent('cw-rep:server:update', function (data)
-     local Player = QBCore.Functions.GetPlayer(source)
-	 MySQL.query('UPDATE players SET skills = @skills WHERE citizenid = @citizenid', {
-		['@skills'] = data,
-		['@citizenid'] = Player.PlayerData.citizenid
-	})
+	updateSkillsInDb(source, data)
 end)
 
 RegisterNetEvent('cw-rep:server:triggerEmail', function(citizenid, sender, subject, message)
