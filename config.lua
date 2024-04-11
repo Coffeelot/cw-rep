@@ -30,6 +30,9 @@ Config.Skills = {
         label = 'Taxi',
         icon = 'fas fa-taxi',
     },
+    crafting = {
+        icon = 'fas fa-wrench',
+    },
     househeft = {
         label = 'Housetheft',
         icon = 'fas fa-house',
