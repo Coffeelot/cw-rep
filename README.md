@@ -183,8 +183,8 @@ For radial menu access to "skills" command add this to qb-radialmenu/config.lua 
 
 > 
 
-### [ Previews ]
-
+# Previews
+## Ox 
 <p align="center">
     <img src="https://media.discordapp.net/attachments/1016069642495729715/1227702266119852132/image.png?ex=66295dd5&is=6616e8d5&hm=544bbf052da18b79839863217e8cee7fb700f8971ee1f2b388c448f62d534325&=&format=webp&quality=lossless"/>
 </p>
