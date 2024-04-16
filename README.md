@@ -22,7 +22,7 @@ If you want to support what we do, you can buy us a coffee here:
 [![Buy Us a Coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg)](https://www.buymeacoffee.com/cwscriptbois )
 
 
-## Installation
+# Installation
 - Download the resource and drop it to your resource folder. Make sure the folder is named `cw-rep`
 - If you're installing from scratch: Import the SQL file to your server's database (i.e. run the sql file and make sure the database runs)
 - If you are changing from mz-skills: 
@@ -32,7 +32,7 @@ If you want to support what we do, you can buy us a coffee here:
 
 > CW-rep has a new (optimized) database format compared to mz-skills, but this conversion is done while the script is being used. This might cause some older unused characters to still have the old format until used
 
-### Setup
+## Setup
 
 You'll probably want to do some setup for this script, so make sure to familiarize yourself with the config. There are some minor differences between this and mz, but the script should be able to rewrite your mz-skills database data into cw-rep on the fly as long as the names in `Config.Skills` match.
 
@@ -76,7 +76,7 @@ The important thing here is the `notify = true` because without that you'll inst
         }
     },
 ```
-### Skill levels
+## Skill levels
 Default Skill levels are defined in `Config.DefaultLevels` and you can customize these to your liking, but you can also make custom levels for each individual skill, for example the streetreputation:
 ```lua
     streetreputation = {
@@ -99,22 +99,23 @@ As you can see, you should also include a sender and a subject here.
 
 You can also find these examples in the Config.
 
-## Using cw-rep
-### Clientside
-To Update a skill please use the following export:
+# Using cw-rep
+## Clientside
+
+### To Update a skill please use the following export:
 ```lua
     exports["cw-rep"]:updateSkill(skillName, amount)
 ```
- For example, to update "Searching" from bin-diving (as used with mz-bins)
+For example, to update "Searching" from bin-diving (as used with mz-bins)
 ```lua
     exports["cw-rep"]:updateSkill("Searching", 1)
 ```
- You can randomise the amount of skill gained, for example: 
+You can randomise the amount of skill gained, for example: 
  ```lua
     local searchgain = math.random(1, 3)
     exports["cw-rep"]:updateSkill("Searching", searchgain)
 ```
-The export to check to see if a skill is equal or greater than a particular value is as follows:
+### The export to check to see if a skill is equal or greater than a particular value is as follows:
 ```lua
     exports["cw-rep"]:checkSkill(skill, val)
 ```
@@ -139,14 +140,37 @@ Or as an alternative this:
 
 > The two above work sorta the same, just different ways to get the same result
 
-- The export to obtain a player's current skill to interact with other scripts is as follows:
+### The export to obtain a player's current skill to interact with other scripts is as follows:
 ```lua
     exports["cw-rep"]:getCurrentSkill(skill)
 ```
-
 > This one differs from mz-skills in that it directly returns the value. In Mz-skills you'd have to do `.Current` to get the value. If you use `GetCurrentSkill` (big G) it returns the same way as mz-skills used to do
 
-### Serverside
+### To get the the level, rather than the skill amount/xp:
+```lua
+    exports["cw-rep"]:getCurrentLevel(skill)
+```
+
+Example: 
+```lua
+    local xp = exports["cw-rep"]:getCurrentSkill('crafting')
+    local level = exports["cw-rep"]:getCurrentLevel('crafting')
+    print('You are level ', level, ' in crafting. Your XP is', xp)
+```
+### If you want info of a skill (what's defined in the config: label for example)
+```lua
+    exports["cw-rep"]:getSkillInfo(skill)
+```
+
+Example usage: 
+```lua
+    local skillInfo = exports["cw-rep"]:getSkillInfo('gun_crafting')
+    print('Label of gun_crafting is', skillInfo.label)
+    print('Icon of gun_crafting is', skillInfo.icon)
+```
+
+
+## Serverside
 To Update a skill please use the following export:
 ```lua
     exports["cw-rep"]:updateSkill(source, skillName, amount)

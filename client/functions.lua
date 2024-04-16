@@ -1,6 +1,29 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local useDebug = Config.Debug
 
+function getLevel(currentSkill, skillName)
+    local level = 0
+    if Config.Skills[skillName] == nil then print('^1 SKILL IS NOT DEFINED IN CONFIG', skillName) end
+
+    local levels = Config.Skills[skillName].skillLevels or Config.DefaultLevels
+    local levelLimits = levels[1]
+    for index, levelData in ipairs(levels) do
+        if currentSkill > levelData.from and currentSkill <= levelData.to then
+            if levelData.title then return levelData.title, levelData end
+            return level, levelData
+        end
+        if currentSkill > levelData.to then
+            level = level+1
+            levelLimits = levelData
+        end
+    end
+    if #levels == level then
+        level = 'Max'
+    end
+    if levelLimits.title then return levelLimits.title, levelLimits end
+    return level, levelLimits
+end
+
 local getCurrentSkill = function(skill)
     if useDebug then print('Fetching skill', skill) end
     if not mySkills[skill] then print("^1Skill " .. skill .. " does not exist") end
@@ -34,6 +57,10 @@ local function handleNotification(skill, prevAmount, newAmount)
     end
 end
 
+-- RegisterCommand('tskills', function(_, input)
+--     handleNotification(input[1], input[2], input[3])
+-- end)
+
 function updateSkill(skill, amount)
     if useDebug then print('Updating', skill, amount) end
     if not Config.Skills[skill] then
@@ -63,6 +90,28 @@ function fetchSkills()
 		mySkills = data
     end)
 end exports('fetchSkills', fetchSkills)
+
+local function getCurrentLevel(skill)
+    if Config.Skills[skill] then
+        if mySkills[skill] then
+            return getLevel(mySkills[skill], skill)
+        else
+            print("^1Attempting to find user data for skill that does not exist in your skill data. Could not find:", skill)
+        end
+    else
+        print("^1Attempting to find level for a skill that does not exist in your Config. Could not find:", skill)
+        return 0
+    end
+end exports('getCurrentLevel', getCurrentLevel)
+
+local function getSkillInfo(skill)
+    if Config.Skills[skill] then
+       return Config.Skills[skill]
+    else
+        print("^1Attempting to find label for a skill that does not exist in your Config. Could not find:", skill)
+        return nil
+    end
+end exports('getSkillInfo', getSkillInfo)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
     Wait(2000)

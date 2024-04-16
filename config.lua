@@ -33,8 +33,12 @@ Config.Skills = {
     crafting = {
         icon = 'fas fa-wrench',
     },
+    gun_crafting = {
+        icon = 'fas fa-gun',
+        label = 'Weapon crafting',
+    },
     househeft = {
-        label = 'Housetheft',
+        label = 'House Theft',
         icon = 'fas fa-house',
     },
     pizza = {

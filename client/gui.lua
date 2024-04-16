@@ -2,34 +2,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local oxmenu = exports.ox_menu
 
-local function getLevel(currentSkill, skillName)
-    local level = 0
-    if Config.Skills[skillName] == nil then print('^1 SKILL IS NOT DEFINED IN CONFIG', skillName) end
-
-    local levels = Config.Skills[skillName].skillLevels or Config.DefaultLevels
-    local levelLimits = levels[1]
-    for index, levelData in ipairs(levels) do
-        print(currentSkill, levelData.from, levelData.to)
-        print(currentSkill > levelData.from, currentSkill < levelData.to)
-        if currentSkill > levelData.from and currentSkill <= levelData.to then
-            if levelData.title then return levelData.title, levelData end
-            return level, levelData
-        end
-        if currentSkill > levelData.to then
-            level = level+1
-            levelLimits = levelData
-        end
-        print('^4', levelData.to)
-    end
-    if #levels == level then
-        print('^5 Max level reached')
-        level = 'Max'
-    end
-    print('^3',skillName, level, json.encode(levelLimits, {indent=true}))
-    if levelLimits.title then return levelLimits.title, levelLimits end
-    return level, levelLimits
-end
-
 local function getXpText(currentXp, nextLevel)
     if currentXp > nextLevel then return 'XP: '..tostring(currentXp) end
     return 'XP: '..currentXp..'/'..nextLevel
