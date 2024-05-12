@@ -1,14 +1,10 @@
-local QBCore = exports['qb-core']:GetCoreObject()
-
-local oxmenu = exports.ox_menu
-
 local function getXpText(currentXp, nextLevel)
     if currentXp > nextLevel then return 'XP: '..tostring(currentXp) end
     return 'XP: '..currentXp..'/'..nextLevel
 end
 
 local function createSkillMenu()
-    skillMenu = {}
+    local skillMenu = {}
     skillMenu[#skillMenu + 1] = {
         isHeader = true,
         header = 'Skills',
@@ -55,9 +51,6 @@ local function createSkillMenuOX()
     for _, key in ipairs(keys) do
         if not Config.Skills[key].hide then
             local currentValue = mySkills[key] or 0
-            local SkillLevel
-            local min = 0
-            local max = 0
 
             local level, levelData = getLevel(tonumber(currentValue), key)
             -- Calculate progress bar percentage
@@ -104,14 +97,12 @@ RegisterCommand(Config.Skillmenu, function()
     else 
         Wait(10)
     end
-end)
+end, false)
         
-RegisterNetEvent("mz-skills:client:CheckSkills", function()
+RegisterNetEvent("cw-rep:client:CheckSkills", function()
     if Config.UseOxMenu then
         createSkillMenuOX()
-    elseif not Config.TypeCommand then
+    else
         createSkillMenu()
-    else 
-        Wait(10)
     end
 end)
