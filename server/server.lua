@@ -69,6 +69,7 @@ RegisterNetEvent('cw-rep:server:triggerEmail', function(citizenid, sender, subje
 end)
 
 local function updateSkill(source, skill, amount)
+	if useDebug then print('Updating skill', skill, amount, 'for', source) end
 	TriggerClientEvent('cw-rep:client:updateSkills', source, skill, amount)
 end exports('updateSkill', updateSkill)
 

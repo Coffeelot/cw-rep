@@ -13,6 +13,26 @@ Config.EmailWaitTimes = { min = 4500, max =  7000 }
 
 Config.GenericMaxAmount = 10000 -- the max skill level. Can be overrided by adding maxLevel to any skill
 Config.GenericIcon = 'fas fa-book'
+Config.ShowNotificationOnSkillGain = true
+
+-- This function can be modified to fit whatever you want to show it. Only shows if the above is set to true.
+-- The amount will come after the string that this function returns.
+Config.SkillGainMessage = function(skillName, amount) 
+    if not Config.Skills[skillName] then return "THIS SKILL DONT EVEN EXIST" end
+    
+    local isPositive = tonumber(amount) > 0
+    local label = skillName
+    if Config.Skills[skillName].label then 
+        label = Config.Skills[skillName].label
+    end
+
+    if isPositive then 
+        return label .. " increased: ".. tostring(amount) 
+    else 
+        return label .. " decreased: ".. tostring(amount)
+    end
+
+end 
 
 Config.DefaultLevels = {
     { from = 0, to = 100 },
@@ -29,13 +49,6 @@ Config.Skills = {
     taxi = {
         label = 'Taxi',
         icon = 'fas fa-taxi',
-    },
-    crafting = {
-        icon = 'fas fa-wrench',
-    },
-    gun_crafting = {
-        icon = 'fas fa-gun',
-        label = 'Weapon crafting',
     },
     househeft = {
         label = 'House Theft',
@@ -60,6 +73,13 @@ Config.Skills = {
             { title = "Underboss", from = 8000, to = 9000 },
             { title = "Boss", from = 9000, to = 10000 }, 
         }
+    },
+    crafting = {
+        icon = 'fas fa-wrench',
+    },
+    gun_crafting = {
+        icon = 'fas fa-gun',
+        label = 'Weapon crafting',
     },
     scrapping = {
         icon = 'fas fa-cannabis',
