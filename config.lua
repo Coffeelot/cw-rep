@@ -13,7 +13,7 @@ Config.EmailWaitTimes = { min = 4500, max =  7000 }
 
 Config.GenericMaxAmount = 10000 -- the max skill level. Can be overrided by adding maxLevel to any skill
 Config.GenericIcon = 'fas fa-book'
-Config.ShowNotificationOnSkillGain = true
+Config.ShowNotificationOnSkillGain = false
 
 -- This function can be modified to fit whatever you want to show it. Only shows if the above is set to true.
 -- The amount will come after the string that this function returns.
