@@ -41,6 +41,7 @@ You can define skills like this:
     lockpicking = { -- if you want to use names with spaces you'll need to type it as "['Lockicking Skill'] = {" for example
         icon = 'fas fa-unlock', -- icon that shows in the menu
         label = 'Lockpicking' -- Label that is displayed in the menu (defaults to name of the skill, just like mz skills if this is not defined)
+        skipNotify = true -- Will not notify player when skill up/down if Config.ShowNotificationOnSkillGain is set to true
     },
 ```
 > Find icon names [here](https://fontawesome.com/v5/search?m=free)
