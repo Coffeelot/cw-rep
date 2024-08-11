@@ -150,10 +150,21 @@ local function playerHasEnoughSkill(skill, value)
         return false
     end
 end exports('playerHasEnoughSkill', playerHasEnoughSkill)
-
+json.encode(, {indent=true})
 local function checkSkill (skill, value, cb)
     cb(playerHasEnoughSkill(skill,value))
 end exports('checkSkill', checkSkill)
+
+local function getAllMySkills()
+    local skillsWithName = {}
+    for name, skill in pairs(Config.Skills) do
+        local thisSkill = skill
+        thisSkill.name = name
+        thisSkill.current = mySkills[name]
+        skillsWithName[#skillsWithName+1] = thisSkill
+    end
+    return skillsWithName
+end exports('getAllSkills', getAllSkills)
 
 
 -- mz skills bridge

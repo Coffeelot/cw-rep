@@ -170,6 +170,12 @@ Example usage:
     print('Icon of gun_crafting is', skillInfo.icon)
 ```
 
+### To get a list of all of a players skills with names and labels:
+```lua
+    local allSkillsForThisPlayer = exports['cw-rep']:getAllSkills()
+    print(json.encode(allSkillsForThisPlayer,{indent=true}))
+```
+> This will be a list similar to the Config.Skills but with `name` and `current` skill level added to it for easy access. 
 
 ## Serverside
 To Update a skill please use the following export:
