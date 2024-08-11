@@ -172,8 +172,15 @@ Example usage:
 
 ### To get a list of all of a players skills with names and labels:
 ```lua
-    local allSkillsForThisPlayer = exports['cw-rep']:getAllSkills()
+    exports["cw-rep"]:getAllSkillsAndLevel()
+```
+
+Example usage:
+```lua
+    local allSkillsForThisPlayer = exports['cw-rep']:getAllSkillsAndLevel()
     print(json.encode(allSkillsForThisPlayer,{indent=true}))
+    print('My skill in lockpicking is', allSkillsForThisPlayer['lockpicking'].current)
+    print('My level in lockpicking is', allSkillsForThisPlayer['lockpicking'].level)
 ```
 > This will be a list similar to the Config.Skills but with `name` and `current` skill level added to it for easy access. 
 

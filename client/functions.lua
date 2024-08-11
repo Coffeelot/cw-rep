@@ -7,6 +7,7 @@ end
 
 function getLevel(currentSkill, skillName)
     local level = 0
+    if not skillName then print('^1 The skill name you sent in was not defined') return end
     if Config.Skills[skillName] == nil then print('^1 SKILL IS NOT DEFINED IN CONFIG', skillName) end
 
     local levels = Config.Skills[skillName].skillLevels or Config.DefaultLevels
@@ -150,21 +151,22 @@ local function playerHasEnoughSkill(skill, value)
         return false
     end
 end exports('playerHasEnoughSkill', playerHasEnoughSkill)
-json.encode(, {indent=true})
+
 local function checkSkill (skill, value, cb)
     cb(playerHasEnoughSkill(skill,value))
 end exports('checkSkill', checkSkill)
 
-local function getAllMySkills()
+local function getAllSkillsAndLevel()
     local skillsWithName = {}
     for name, skill in pairs(Config.Skills) do
         local thisSkill = skill
         thisSkill.name = name
         thisSkill.current = mySkills[name]
-        skillsWithName[#skillsWithName+1] = thisSkill
+        thisSkill.level = getLevel(thisSkill.current, name)
+        skillsWithName[name] = thisSkill
     end
     return skillsWithName
-end exports('getAllSkills', getAllSkills)
+end exports('getAllSkillsAndLevel', getAllSkillsAndLevel)
 
 
 -- mz skills bridge
