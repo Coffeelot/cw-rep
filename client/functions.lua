@@ -8,6 +8,10 @@ end
 function getLevel(currentSkill, skillName)
     local level = 0
     if not skillName then print('^1 The skill name you sent in was not defined') return end
+    if not currentSkill then 
+        if useDebug then print('^1 Attempting to get level for a skill with no xp, defaulting to 0') end 
+        currentSkill = 0  
+    end
     if Config.Skills[skillName] == nil then print('^1 SKILL IS NOT DEFINED IN CONFIG', skillName) end
 
     local levels = Config.Skills[skillName].skillLevels or Config.DefaultLevels
