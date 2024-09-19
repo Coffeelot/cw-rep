@@ -16,6 +16,7 @@ Config.GenericIcon = 'fas fa-book'
 Config.ShowNotificationOnSkillGain = false
 
 Config.MinutesBetweenUpdates = 10 -- minutes between each server-to-database udpate
+Config.HideSkillsWithZeroLevels = true -- Hide skills from the menu if you aren't on level 1
 
 -- This function can be modified to fit whatever you want to show it. Only shows if the above is set to true.
 -- The amount will come after the string that this function returns.

@@ -3,6 +3,13 @@ local function getXpText(currentXp, nextLevel)
     return 'XP: '..currentXp..'/'..nextLevel
 end
 
+local function levelIsVerified(level)
+    if Config.HideSkillsWithZeroLevels then
+        return level > 0
+    end
+    return true
+end
+
 local function createSkillMenu()
     local skillMenu = {}
     skillMenu[#skillMenu + 1] = {
@@ -20,16 +27,18 @@ local function createSkillMenu()
         end
         if not skillData.hide then
             local level, levelData = getLevel(currentValue, k)
-            skillMenu[#skillMenu + 1] = {
-                header = label .. ' (Level: ' .. level .. ')',
-                txt = getXpText(currentValue, levelData.to),
-                icon = skillData.icon or nil,
-                params = {
-                    args = {
-                        v
+            if levelIsVerified(level) then
+                skillMenu[#skillMenu + 1] = {
+                    header = label .. ' (Level: ' .. level .. ')',
+                    txt = getXpText(currentValue, levelData.to),
+                    icon = skillData.icon or nil,
+                    params = {
+                        args = {
+                            v
+                        }
                     }
                 }
-            }
+            end
         end
     end
     exports['qb-menu']:openMenu(skillMenu)
@@ -63,17 +72,18 @@ local function createSkillMenuOX()
             if Config.Skills[key] and Config.Skills[key].icon then
                 icon = Config.Skills[key].icon
             end
-    
-            options[#options + 1] = {
-                title = label .. ' (Level: ' .. level .. ')',
-                description = getXpText(currentValue, levelData.to),
-                icon = icon,
-                args = {
-                    currentValue = currentValue
-                },
-                progress = math.floor((currentValue - levelData.from) / (levelData.to - levelData.from) * 100),
-                colorScheme = Config.XPBarColour,
-            }
+            if levelIsVerified(level) then
+                options[#options + 1] = {
+                    title = label .. ' (Level: ' .. level .. ')',
+                    description = getXpText(currentValue, levelData.to),
+                    icon = icon,
+                    args = {
+                        currentValue = currentValue
+                    },
+                    progress = math.floor((currentValue - levelData.from) / (levelData.to - levelData.from) * 100),
+                    colorScheme = Config.XPBarColour,
+                }
+            end
         end
     end
 
