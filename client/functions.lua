@@ -94,6 +94,7 @@ function updateSkill(skill, amount)
         notify(Config.SkillGainMessage(skill, amount)) 
     end
     handleNotification(skill, SkillAmount, SkillAmount+tonumber(amount))
+    TriggerEvent('cw-rep:client:repWasUpdated', mySkills)
 	TriggerServerEvent("cw-rep:server:update", json.encode(mySkills))
 end exports('updateSkill', updateSkill)
 

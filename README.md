@@ -184,6 +184,15 @@ Example usage:
 ```
 > This will be a list similar to the Config.Skills but with `name` and `current` skill level added to it for easy access. 
 
+
+### If you want to listen to changes of a players skills
+```lua
+RegisterNetEvent('cw-rep:client:repWasUpdated', function(skills)
+    print('new skills', json.encode(skills, {indent=true})) -- remove this line after you know how `skills` look
+    -- Add code to do something with this info
+end)
+```
+
 ## Serverside
 To Update a skill please use the following export:
 ```lua
