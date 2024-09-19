@@ -3,6 +3,7 @@
 - A database held skill/XP system for qb (optimized from mz-skills)
 - Full backwards compatibility with mz-skills exports (no need to upgrade all your scripts using mz skills)
 - Supports QB menu and OX menu
+- Only updates database every X minutes rather than on-update
 
 > All credit to MrZainRP for [mz-skills](https://github.com/MrZainRP/mz-skills) which this is based on. Great script.
 
