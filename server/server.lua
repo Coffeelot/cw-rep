@@ -17,6 +17,7 @@ local function formatResults(results)
 end
 
 local function getDefault()
+    if useDebug then print('Player had no data in DB. Fetching default skills') end
     local playerSkills = {}
     for skill, data in pairs(Config.Skills) do
         playerSkills[skill] = 0
@@ -37,6 +38,7 @@ local function fetchSkillsFromDb(source)
     local Player = QBCore.Functions.GetPlayer(source)
     if Player then
         local status = MySQL.scalar.await('SELECT skills FROM players WHERE citizenid = ?', {Player.PlayerData.citizenid})
+        if useDebug then print('result', json.encode(status, {indent=true})) end
         if status ~= nil then
             return formatResults(json.decode(status))
         else
